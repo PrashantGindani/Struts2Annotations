@@ -1,0 +1,498 @@
+USE [master]
+GO
+/****** Object:  Database [Bridal_Attire]    Script Date: 02-08-2022 12:19:38 ******/
+CREATE DATABASE [Bridal_Attire]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Bridal_Attire', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Bridal_Attire.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Bridal_Attire_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Bridal_Attire_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [Bridal_Attire] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Bridal_Attire].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Bridal_Attire] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Bridal_Attire] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Bridal_Attire] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Bridal_Attire] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Bridal_Attire] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [Bridal_Attire] SET  MULTI_USER 
+GO
+ALTER DATABASE [Bridal_Attire] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Bridal_Attire] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Bridal_Attire] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Bridal_Attire] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [Bridal_Attire] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Bridal_Attire] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'Bridal_Attire', N'ON'
+GO
+ALTER DATABASE [Bridal_Attire] SET QUERY_STORE = OFF
+GO
+USE [Bridal_Attire]
+GO
+/****** Object:  User [saa]    Script Date: 02-08-2022 12:19:38 ******/
+CREATE USER [saa] FOR LOGIN [saa] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [sa1]    Script Date: 02-08-2022 12:19:38 ******/
+CREATE USER [sa1] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[AdminMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AdminMaster](
+	[ademailid] [nvarchar](50) NOT NULL,
+	[adpass] [nvarchar](20) NOT NULL,
+	[adname] [nvarchar](20) NOT NULL,
+	[admobile] [numeric](10, 0) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ademailid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AppointmentMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AppointmentMaster](
+	[appid] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[packid] [numeric](18, 0) NOT NULL,
+	[apptime] [datetime] NOT NULL,
+	[useremail] [nvarchar](max) NOT NULL,
+	[appstatus] [nvarchar](15) NOT NULL,
+	[appadress] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Table] PRIMARY KEY CLUSTERED 
+(
+	[appid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CartMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CartMaster](
+	[userid] [nvarchar](50) NOT NULL,
+	[prodid] [numeric](18, 0) NOT NULL,
+	[quantity] [numeric](2, 0) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[userid] ASC,
+	[prodid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[OrderMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[OrderMaster](
+	[OrderID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[useremail] [nvarchar](max) NOT NULL,
+	[prodid] [numeric](18, 0) NOT NULL,
+	[orderdate] [date] NOT NULL,
+	[orderdeliverydate] [date] NOT NULL,
+	[deliverycharge] [numeric](4, 0) NOT NULL,
+	[odbillamount] [numeric](10, 0) NOT NULL,
+	[payementmode] [nvarchar](max) NOT NULL,
+	[status] [nvarchar](max) NOT NULL,
+	[paidornot] [nvarchar](max) NOT NULL,
+	[address] [nvarchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[OrderID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PackageMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PackageMaster](
+	[packid] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[packname] [nvarchar](max) NOT NULL,
+	[packdesc] [nvarchar](max) NOT NULL,
+	[price] [nvarchar](max) NOT NULL,
+	[avgtime] [numeric](18, 0) NOT NULL,
+	[packimg] [nvarchar](max) NOT NULL,
+	[beautician] [nvarchar](max) NOT NULL,
+	[sellerid] [numeric](18, 0) NOT NULL,
+ CONSTRAINT [PK_PackageMaster] PRIMARY KEY CLUSTERED 
+(
+	[packid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PaymentMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PaymentMaster](
+	[payid] [numeric](18, 0) NOT NULL,
+	[orderid] [numeric](18, 0) NOT NULL,
+	[useremail] [nvarchar](50) NOT NULL,
+	[paydate] [date] NOT NULL,
+	[payamount] [numeric](10, 0) NOT NULL,
+	[paymode] [nvarchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[payid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[productdescript]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[productdescript](
+	[ProdID] [numeric](18, 0) IDENTITY(101,1) NOT NULL,
+	[Productname] [nvarchar](max) NOT NULL,
+	[prodimage] [nvarchar](max) NOT NULL,
+	[procolor] [nvarchar](max) NOT NULL,
+	[sellerid] [numeric](18, 0) NOT NULL,
+	[price] [numeric](8, 0) NOT NULL,
+	[mrpprice] [numeric](8, 0) NOT NULL,
+	[avgrating] [numeric](2, 1) NULL,
+	[noofratings] [numeric](4, 0) NULL,
+	[noofreviews] [numeric](4, 0) NULL,
+	[warrantyperiod] [numeric](4, 0) NULL,
+	[returnperiod] [numeric](3, 0) NULL,
+	[codpolicy] [binary](1) NULL,
+	[quantity] [numeric](10, 0) NOT NULL,
+	[tags] [nvarchar](max) NOT NULL,
+	[discount] [numeric](2, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ProdID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RentMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RentMaster](
+	[appid] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[prodid] [numeric](18, 0) NOT NULL,
+	[securitydeposit] [numeric](18, 0) NOT NULL,
+	[charge] [numeric](18, 0) NULL,
+	[starttime] [datetime] NOT NULL,
+	[endtime] [datetime] NOT NULL,
+	[useremail] [nvarchar](max) NOT NULL,
+	[rentstatus] [nvarchar](15) NOT NULL,
+ CONSTRAINT [PK_Tble] PRIMARY KEY CLUSTERED 
+(
+	[appid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[rentproductdescript]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[rentproductdescript](
+	[ProdID] [numeric](18, 0) IDENTITY(101,1) NOT NULL,
+	[Productname] [nvarchar](max) NOT NULL,
+	[prodimage] [nvarchar](max) NOT NULL,
+	[procolor] [nvarchar](max) NOT NULL,
+	[sellerid] [numeric](18, 0) NOT NULL,
+	[price] [numeric](8, 0) NOT NULL,
+	[mrpprice] [numeric](8, 0) NOT NULL,
+	[quantity] [numeric](10, 0) NOT NULL,
+	[tags] [nvarchar](max) NOT NULL,
+	[discount] [numeric](2, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ProdID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReviewTable]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReviewTable](
+	[ReviewID] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[ProdID] [numeric](18, 0) NOT NULL,
+	[RevMsg] [nvarchar](max) NULL,
+	[RevStars] [numeric](1, 0) NULL,
+	[RevUsername] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_ReviewTable] PRIMARY KEY CLUSTERED 
+(
+	[ReviewID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SellerMaster]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SellerMaster](
+	[sellerid] [numeric](18, 0) IDENTITY(1001,2) NOT NULL,
+	[saddress] [nvarchar](max) NOT NULL,
+	[smobile] [numeric](10, 0) NOT NULL,
+	[semail] [nvarchar](max) NOT NULL,
+	[spass] [nvarchar](max) NOT NULL,
+	[sfirmname] [nvarchar](max) NOT NULL,
+	[sgstno] [nvarchar](max) NOT NULL,
+	[spanno] [nvarchar](max) NULL,
+	[approved] [nvarchar](10) NOT NULL,
+	[scity] [nvarchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[sellerid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Table1212]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Table1212](
+	[packid] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[packname] [nvarchar](max) NOT NULL,
+	[packdesc] [numeric](18, 0) NOT NULL,
+	[price] [numeric](18, 0) NOT NULL,
+	[avgtime] [time](7) NOT NULL,
+	[packimg] [nvarchar](max) NOT NULL,
+	[beautician] [nvarchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[packid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[USER_Master]    Script Date: 02-08-2022 12:19:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[USER_Master](
+	[user_email] [nvarchar](50) NOT NULL,
+	[firstname] [nvarchar](max) NOT NULL,
+	[lastname] [nvarchar](max) NOT NULL,
+	[password] [nvarchar](max) NOT NULL,
+	[mobileno] [numeric](10, 0) NULL,
+	[gender] [nvarchar](max) NULL,
+	[useraddress] [nchar](10) NULL,
+	[usercity] [nchar](10) NULL,
+	[userpincode] [numeric](10, 0) NULL,
+ CONSTRAINT [PK_USER_Master] PRIMARY KEY CLUSTERED 
+(
+	[user_email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[AdminMaster] ([ademailid], [adpass], [adname], [admobile]) VALUES (N'neha@admin', N'admin@123', N'Neha', CAST(1234567890 AS Numeric(10, 0)))
+GO
+INSERT [dbo].[AdminMaster] ([ademailid], [adpass], [adname], [admobile]) VALUES (N'prashant@admin.com', N'admin@123', N'Prashant', CAST(9429091718 AS Numeric(10, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[AppointmentMaster] ON 
+GO
+INSERT [dbo].[AppointmentMaster] ([appid], [packid], [apptime], [useremail], [appstatus], [appadress]) VALUES (CAST(2 AS Numeric(18, 0)), CAST(1 AS Numeric(18, 0)), CAST(N'2020-06-12T10:30:00.000' AS DateTime), N'prashantgindani@gmail.com', N'requested', N'12, abcd,asdas,asd')
+GO
+INSERT [dbo].[AppointmentMaster] ([appid], [packid], [apptime], [useremail], [appstatus], [appadress]) VALUES (CAST(4 AS Numeric(18, 0)), CAST(2 AS Numeric(18, 0)), CAST(N'2020-06-12T21:30:00.000' AS DateTime), N'prashantgindani@gmail.com', N'requested', N'12, abcd,asdas,asd')
+GO
+INSERT [dbo].[AppointmentMaster] ([appid], [packid], [apptime], [useremail], [appstatus], [appadress]) VALUES (CAST(5 AS Numeric(18, 0)), CAST(1 AS Numeric(18, 0)), CAST(N'2020-12-22T00:00:00.000' AS DateTime), N'prashantgindani@gmail.com', N'requested', N'Mahadev Society, near Hari Shewa school, Warasiya, Vadodara')
+GO
+SET IDENTITY_INSERT [dbo].[AppointmentMaster] OFF
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'1', CAST(102 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'1', CAST(103 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'1', CAST(105 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'neha@gmail.com', CAST(101 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'neha@gmail.com', CAST(103 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'prashantgindani@gmail.com', CAST(101 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[CartMaster] ([userid], [prodid], [quantity]) VALUES (N'prashantgindani@gmail.com', CAST(105 AS Numeric(18, 0)), CAST(1 AS Numeric(2, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[OrderMaster] ON 
+GO
+INSERT [dbo].[OrderMaster] ([OrderID], [useremail], [prodid], [orderdate], [orderdeliverydate], [deliverycharge], [odbillamount], [payementmode], [status], [paidornot], [address]) VALUES (CAST(101010 AS Numeric(18, 0)), N'prashantgindani@gmail.com', CAST(102 AS Numeric(18, 0)), CAST(N'2020-10-06' AS Date), CAST(N'2020-12-06' AS Date), CAST(200 AS Numeric(4, 0)), CAST(40000 AS Numeric(10, 0)), N'COD', N'TOPICKUP', N'PAID', N'12, Mahadev Soc, Vadodara')
+GO
+SET IDENTITY_INSERT [dbo].[OrderMaster] OFF
+GO
+SET IDENTITY_INSERT [dbo].[PackageMaster] ON 
+GO
+INSERT [dbo].[PackageMaster] ([packid], [packname], [packdesc], [price], [avgtime], [packimg], [beautician], [sellerid]) VALUES (CAST(1 AS Numeric(18, 0)), N'pack1', N'abcdef', N'1400', CAST(1 AS Numeric(18, 0)), N'https://5.imimg.com/data5/DT/HR/MY-28344916/parlour-pack-facial-kit-500x500.jpg', N'abcde', CAST(10010 AS Numeric(18, 0)))
+GO
+INSERT [dbo].[PackageMaster] ([packid], [packname], [packdesc], [price], [avgtime], [packimg], [beautician], [sellerid]) VALUES (CAST(2 AS Numeric(18, 0)), N'pack2', N'abcdef', N'3000', CAST(2 AS Numeric(18, 0)), N'https://www.heavenlyblissbeauty.com.au/uploads/126/facials.jpg', N'abcd', CAST(10010 AS Numeric(18, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[PackageMaster] OFF
+GO
+INSERT [dbo].[PaymentMaster] ([payid], [orderid], [useremail], [paydate], [payamount], [paymode]) VALUES (CAST(100001 AS Numeric(18, 0)), CAST(101010 AS Numeric(18, 0)), N'prashantgindani@gmail.com', CAST(N'2020-12-06' AS Date), CAST(40200 AS Numeric(10, 0)), N'COD')
+GO
+SET IDENTITY_INSERT [dbo].[productdescript] ON 
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(102 AS Numeric(18, 0)), N'Gold Necklace Trendy Design', N'https://blog.southindiajewels.com/wp-content/uploads/2018/09/16-gram-gold-necklace-designs-21.png', N'Gold', CAST(10010 AS Numeric(18, 0)), CAST(20000 AS Numeric(8, 0)), CAST(22000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(0 AS Numeric(4, 0)), CAST(15 AS Numeric(3, 0)), 0x00, CAST(13 AS Numeric(10, 0)), N'gold, necklace, trendy,design, 16 carat, floral, flower, artistic, jewellery', CAST(9 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(103 AS Numeric(18, 0)), N'Southern India Necklace', N'https://blog.southindiajewels.com/wp-content/uploads/2018/08/gold-necklace-designs-in-15-grams-2.png', N'Gold', CAST(10010 AS Numeric(18, 0)), CAST(15000 AS Numeric(8, 0)), CAST(20000 AS Numeric(8, 0)), CAST(3.6 AS Numeric(2, 1)), CAST(6 AS Numeric(4, 0)), CAST(0 AS Numeric(4, 0)), CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), 0x01, CAST(4 AS Numeric(10, 0)), N'gold, necklace, south, india,southern, design, thin, pendent, diamond, jewellery', CAST(25 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(104 AS Numeric(18, 0)), N'Necklace - elegant design', N'https://www.harrywinston.com/sites/default/files/jewelry-img/NKDPRDOLLP-247063-trans-1h.png', N'Platinum', CAST(20010 AS Numeric(18, 0)), CAST(35000 AS Numeric(8, 0)), CAST(48000 AS Numeric(8, 0)), CAST(4.0 AS Numeric(2, 1)), CAST(10 AS Numeric(4, 0)), CAST(1 AS Numeric(4, 0)), CAST(365 AS Numeric(4, 0)), CAST(20 AS Numeric(3, 0)), 0x01, CAST(1 AS Numeric(10, 0)), N'platinum, necklace, elegant design, diamond work, circular design, jewellery', CAST(28 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(105 AS Numeric(18, 0)), N'Pearl Necklace', N'https://www.notandas.com/resources/images/diamonds/necklace/Serpentinus-necklace.png', N'Platinum', CAST(20020 AS Numeric(18, 0)), CAST(39000 AS Numeric(8, 0)), CAST(45000 AS Numeric(8, 0)), CAST(3.8 AS Numeric(2, 1)), CAST(4 AS Numeric(4, 0)), CAST(0 AS Numeric(4, 0)), CAST(0 AS Numeric(4, 0)), CAST(0 AS Numeric(3, 0)), 0x00, CAST(2 AS Numeric(10, 0)), N'platinum, necklace, pearl, diamond, leaves, leaf work, jewellery ', CAST(13 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(106 AS Numeric(18, 0)), N'Artisti Necklace -Platinum', N'https://pngimg.com/uploads/necklace/necklace_PNG43.png', N'Platinum', CAST(20020 AS Numeric(18, 0)), CAST(37000 AS Numeric(8, 0)), CAST(55000 AS Numeric(8, 0)), CAST(2.5 AS Numeric(2, 1)), CAST(12 AS Numeric(4, 0)), CAST(6 AS Numeric(4, 0)), CAST(365 AS Numeric(4, 0)), CAST(10 AS Numeric(3, 0)), 0x00, CAST(10 AS Numeric(10, 0)), N'platinum, necklace, cool design, diamond, small work, jewellery', CAST(33 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(107 AS Numeric(18, 0)), N'abcd', N'aaaaaaaaaaaa', N'aaaa', CAST(10010 AS Numeric(18, 0)), CAST(1500 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(1 AS Numeric(4, 0)), CAST(25 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'gold, coindaa, jewellery', CAST(0 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(116 AS Numeric(18, 0)), N'Bridal White Dress', N'https://smallimg.pngkey.com/png/small/86-865729_dress-png-gown-wedding-wedding-dresses-fantasy-gowns.png', N'White', CAST(10010 AS Numeric(18, 0)), CAST(1000 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'white, dress, bridal, wedding', CAST(50 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(117 AS Numeric(18, 0)), N'Bridal Blue Dress', N'https://freepngimg.com/thumb/dress/31498-6-dress-transparent-background.png', N'Blue', CAST(10010 AS Numeric(18, 0)), CAST(1000 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'blue, dress, bridal, wedding', CAST(50 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(118 AS Numeric(18, 0)), N'Bridal BlackDress', N'https://www.pngarts.com/files/3/Black-Dress-PNG-Image.png', N'Black', CAST(10010 AS Numeric(18, 0)), CAST(1000 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'blue, dress, bridal, wedding', CAST(50 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(119 AS Numeric(18, 0)), N'Bridal Pink Lehenga', N'https://simg.nicepng.com/png/small/270-2706913_pink-traditional-lehenga-mannequin.png', N'Pink', CAST(10010 AS Numeric(18, 0)), CAST(1400 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'pink, dress, bridal, wedding', CAST(30 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(120 AS Numeric(18, 0)), N'Bridal Red Lehenga', N'https://www.kindpng.com/picc/m/160-1606201_red-bridal-lehenga-png-photo-ethnic-wear-mannequin.png', N'Red', CAST(10010 AS Numeric(18, 0)), CAST(1400 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'Red, dress, bridal, wedding', CAST(30 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[productdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [avgrating], [noofratings], [noofreviews], [warrantyperiod], [returnperiod], [codpolicy], [quantity], [tags], [discount]) VALUES (CAST(121 AS Numeric(18, 0)), N'Bridal Peach Lehenga', N'https://i.pinimg.com/originals/c3/15/03/c31503af13a60042e923479dd65b1485.jpg', N'Red', CAST(10010 AS Numeric(18, 0)), CAST(1400 AS Numeric(8, 0)), CAST(2000 AS Numeric(8, 0)), NULL, NULL, NULL, CAST(365 AS Numeric(4, 0)), CAST(30 AS Numeric(3, 0)), NULL, CAST(3 AS Numeric(10, 0)), N'Peach, dress, bridal, wedding', CAST(30 AS Numeric(2, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[productdescript] OFF
+GO
+SET IDENTITY_INSERT [dbo].[RentMaster] ON 
+GO
+INSERT [dbo].[RentMaster] ([appid], [prodid], [securitydeposit], [charge], [starttime], [endtime], [useremail], [rentstatus]) VALUES (CAST(1 AS Numeric(18, 0)), CAST(102 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(N'2021-04-13T00:00:00.000' AS DateTime), CAST(N'2021-04-15T00:00:00.000' AS DateTime), N'prashantgindani@gmail.com', N'requested')
+GO
+INSERT [dbo].[RentMaster] ([appid], [prodid], [securitydeposit], [charge], [starttime], [endtime], [useremail], [rentstatus]) VALUES (CAST(2 AS Numeric(18, 0)), CAST(102 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(N'2021-04-13T00:00:00.000' AS DateTime), CAST(N'2021-04-15T00:00:00.000' AS DateTime), N'prashantgindani@gmail.com', N'requested')
+GO
+SET IDENTITY_INSERT [dbo].[RentMaster] OFF
+GO
+SET IDENTITY_INSERT [dbo].[rentproductdescript] ON 
+GO
+INSERT [dbo].[rentproductdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [quantity], [tags], [discount]) VALUES (CAST(101 AS Numeric(18, 0)), N'ABCD', N'https://th.bing.com/th/id/R1d8460f805a876779141877f0638fa32?rik=8lNy6L8kmp7HPg&riu=http%3a%2f%2fpngimg.com%2fuploads%2fjewelry%2fjewelry_PNG6734.png&ehk=j%2fh0AhZpEm5stO5bSnOLy0o25R%2bMiqHccMAR2Hwsoh0%3d&risl=&pid=ImgRaw', N'blue diamond', CAST(10010 AS Numeric(18, 0)), CAST(399 AS Numeric(8, 0)), CAST(900 AS Numeric(8, 0)), CAST(12 AS Numeric(10, 0)), N'jewellery, diamond, blue pendant', CAST(0 AS Numeric(2, 0)))
+GO
+INSERT [dbo].[rentproductdescript] ([ProdID], [Productname], [prodimage], [procolor], [sellerid], [price], [mrpprice], [quantity], [tags], [discount]) VALUES (CAST(102 AS Numeric(18, 0)), N'abcd12122112', N'https://th.bing.com/th/id/R9bfe77109d969e15e4a35f468b6d75f6?rik=2TXasOxGfMwMVA&riu=http%3a%2f%2fwww.pngall.com%2fwp-content%2fuploads%2f2016%2f05%2fJewellery-PNG-Picture.png&ehk=27jDQqPTaJk63Ex49vtPwiIXIQ3uFXV7%2bAQaiM2il7U%3d&risl=&pid=ImgRaw', N'gold', CAST(10010 AS Numeric(18, 0)), CAST(699 AS Numeric(8, 0)), CAST(0 AS Numeric(8, 0)), CAST(3 AS Numeric(10, 0)), N'gold, coindaa', CAST(0 AS Numeric(2, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[rentproductdescript] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ReviewTable] ON 
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(1 AS Numeric(18, 0)), CAST(101 AS Numeric(18, 0)), N'Hello1', CAST(2 AS Numeric(1, 0)), N'Neha')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(2 AS Numeric(18, 0)), CAST(101 AS Numeric(18, 0)), N'Hello2', CAST(3 AS Numeric(1, 0)), N'Vaibhavi')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(3 AS Numeric(18, 0)), CAST(101 AS Numeric(18, 0)), N'Hello3', CAST(3 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(4 AS Numeric(18, 0)), CAST(102 AS Numeric(18, 0)), N'Hello1', CAST(4 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(5 AS Numeric(18, 0)), CAST(102 AS Numeric(18, 0)), N'Hello2', CAST(5 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(6 AS Numeric(18, 0)), CAST(102 AS Numeric(18, 0)), N'Hell03', CAST(1 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(7 AS Numeric(18, 0)), CAST(103 AS Numeric(18, 0)), N'Hello1', CAST(4 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(8 AS Numeric(18, 0)), CAST(103 AS Numeric(18, 0)), N'Hello2', CAST(5 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(9 AS Numeric(18, 0)), CAST(103 AS Numeric(18, 0)), N'Hell03', CAST(1 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(10 AS Numeric(18, 0)), CAST(104 AS Numeric(18, 0)), N'Hello1', CAST(4 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(11 AS Numeric(18, 0)), CAST(104 AS Numeric(18, 0)), N'Hello2', CAST(5 AS Numeric(1, 0)), N'ABCD')
+GO
+INSERT [dbo].[ReviewTable] ([ReviewID], [ProdID], [RevMsg], [RevStars], [RevUsername]) VALUES (CAST(12 AS Numeric(18, 0)), CAST(104 AS Numeric(18, 0)), N'Hell03', CAST(1 AS Numeric(1, 0)), N'ABCD')
+GO
+SET IDENTITY_INSERT [dbo].[ReviewTable] OFF
+GO
+SET IDENTITY_INSERT [dbo].[SellerMaster] ON 
+GO
+INSERT [dbo].[SellerMaster] ([sellerid], [saddress], [smobile], [semail], [spass], [sfirmname], [sgstno], [spanno], [approved], [scity]) VALUES (CAST(10010 AS Numeric(18, 0)), N'temp address', CAST(9900990099 AS Numeric(10, 0)), N'abcd@email.com', N'seller@1234', N'abc', N'g12121212jj', N'asdassa', N'yes', N'vadodara')
+GO
+INSERT [dbo].[SellerMaster] ([sellerid], [saddress], [smobile], [semail], [spass], [sfirmname], [sgstno], [spanno], [approved], [scity]) VALUES (CAST(10012 AS Numeric(18, 0)), N'abcdef,abcd', CAST(9494949494 AS Numeric(10, 0)), N'abc@email.com', N'12345678', N'abc', N'abc', NULL, N'no', N'vadodara')
+GO
+INSERT [dbo].[SellerMaster] ([sellerid], [saddress], [smobile], [semail], [spass], [sfirmname], [sgstno], [spanno], [approved], [scity]) VALUES (CAST(10024 AS Numeric(18, 0)), N'Mahadev Society, near Hari Shewa school, Warasiya, Vadodara', CAST(9429091718 AS Numeric(10, 0)), N'prashantgindani@gmail.c', N'12345678', N'abc121', N'abc1212', NULL, N'no', N'1233121')
+GO
+INSERT [dbo].[SellerMaster] ([sellerid], [saddress], [smobile], [semail], [spass], [sfirmname], [sgstno], [spanno], [approved], [scity]) VALUES (CAST(10026 AS Numeric(18, 0)), N'Mahadev Society, near Hari Shewa school, Warasiya, Vadodara', CAST(9429091718 AS Numeric(10, 0)), N'prashantgindani@gmail.com', N'12345678', N'abc121', N'abc1212', NULL, N'no', N'12121212')
+GO
+INSERT [dbo].[SellerMaster] ([sellerid], [saddress], [smobile], [semail], [spass], [sfirmname], [sgstno], [spanno], [approved], [scity]) VALUES (CAST(10030 AS Numeric(18, 0)), N'Mahadev Society, near Hari Shewa school, Warasiya, Vadodara', CAST(9429091718 AS Numeric(10, 0)), N'prashantgindani@gmail.com121212121212', N'12345678', N'abc', N'abc1212', NULL, N'no', N'Vadodara')
+GO
+SET IDENTITY_INSERT [dbo].[SellerMaster] OFF
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'', N'', N'', N'', NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'info.smit@email.com', N'smitkumar', N'rathod', N'123456', NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'neha@gmail.com', N'Neha', N'Neha', N'Neha@123', CAST(1234567890 AS Numeric(10, 0)), N'female', NULL, NULL, NULL)
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'prashantgindani@gmail.com', N'Prashant', N'Gindani', N'admin@1234', CAST(9429091718 AS Numeric(10, 0)), N'male', N'asfasfsa  ', N'asfasfas  ', CAST(171717 AS Numeric(10, 0)))
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'prashantgindani@gmail.com111', N'Prashant', N'Gindani', N'asafdsd', NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'prashantgindani@gmail.com2121212', N'Prashant', N'Gindani', N'efasfsafsafsa', NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[USER_Master] ([user_email], [firstname], [lastname], [password], [mobileno], [gender], [useraddress], [usercity], [userpincode]) VALUES (N'prashantgindaniqw@gmail.com', N'Prashant', N'Gindani', N'123456', NULL, NULL, NULL, NULL, NULL)
+GO
+USE [master]
+GO
+ALTER DATABASE [Bridal_Attire] SET  READ_WRITE 
+GO
